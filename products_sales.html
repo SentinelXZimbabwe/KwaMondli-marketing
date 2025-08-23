@@ -38,15 +38,6 @@
       font-size: 0.9rem;
       opacity: 0.9;
     }
-    .live-message {
-      background: linear-gradient(90deg, #ff416c, #ff4b2b);
-      padding: 30px 50px;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(255,75,43,0.5);
-      font-size: 2rem;
-      font-weight: bold;
-      color: #fff;
-    }
   </style>
 </head>
 <body>
@@ -71,8 +62,8 @@
   </div>
 
   <script>
-    // Set launch date to 1 September 2025 00:00:00
-    const launchDate = new Date("Sep 1, 2025 00:00:00").getTime();
+    // Set the launch date
+    const launchDate = new Date("Sept 1, 2025 18:00:00").getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -80,7 +71,7 @@
 
       if (distance <= 0) {
         clearInterval(timer);
-        document.body.innerHTML = "<div class='live-message'>We Are Live! 🎉</div>";
+        document.body.innerHTML = "<h1 style='color:#ff4b2b; font-size:2.5rem;'>We Are Live! 🎉</h1>";
         return;
       }
 
