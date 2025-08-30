@@ -14,8 +14,12 @@
     nav {display:flex;justify-content:center;background:#111;flex-wrap:wrap;}
     nav a {margin:0 15px;padding:15px 0;display:inline-block;font-weight:bold;color:#fff;transition:color 0.3s;}
     nav a:hover {color:#ff4b2b;}
-    section {padding:50px 20px;text-align:center;}
+    section {padding:40px 20px;text-align:center;}
     section h2 {font-family:'Raleway',sans-serif;font-size:2rem;margin-bottom:30px;color:#ff4b2b;}
+    .cards {display:flex;flex-wrap:wrap;justify-content:center;gap:25px;}
+    .card {background:#222;border-radius:15px;width:250px;padding:30px;text-align:center;cursor:pointer;transition:transform 0.3s,box-shadow 0.3s;}
+    .card:hover {transform:translateY(-5px);box-shadow:0 8px 20px rgba(255,75,43,0.5);}
+    .card i {font-size:3rem;color:#ff4b2b;margin-bottom:15px;}
     .products {display:flex;flex-wrap:wrap;justify-content:center;gap:25px;}
     .product-card {background:#222;border-radius:15px;width:220px;padding:20px;text-align:center;transition:transform 0.3s,box-shadow 0.3s;}
     .product-card:hover {transform:translateY(-5px);box-shadow:0 8px 20px rgba(255,75,43,0.5);}
@@ -23,12 +27,13 @@
     .product-card h3 {margin:10px 0 5px;font-size:1.1rem;}
     .product-card p {margin:5px 0;}
     .product-card button {background:#ff4b2b;border:none;padding:8px 15px;border-radius:5px;color:#fff;cursor:pointer;margin-top:10px;}
+    .back-btn {display:inline-block;margin:20px auto;padding:10px 20px;background:#ff416c;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold;}
     .cart {position:fixed;top:80px;right:20px;background:#111;padding:20px;border-radius:15px;width:280px;max-height:80vh;overflow-y:auto;}
     .cart h3 {margin-top:0;color:#ff4b2b;}
     .cart-item {display:flex;justify-content:space-between;margin-bottom:10px;}
     .checkout-btn {background:#ff416c;padding:10px;width:100%;border:none;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;margin-top:10px;}
     @media(max-width:768px){
-      .products{flex-direction:column;align-items:center}
+      .products,.cards{flex-direction:column;align-items:center}
       .cart{width:90%;right:5%;top:auto;bottom:20px}
     }
   </style>
@@ -40,28 +45,34 @@
   </header>
 
   <nav>
-    <a href="#beverages">Beverages</a>
-    <a href="#restaurant">Restaurant</a>
-    <a href="#groceries">Groceries</a>
+    <a href="#" onclick="showCategories()">Categories</a>
     <a href="#cart">Cart</a>
   </nav>
 
-  <!-- Beverages -->
-  <section id="beverages">
-    <h2>Beverages</h2>
-    <div class="products" id="beverages-list"></div>
+  <!-- Categories -->
+  <section id="categories">
+    <h2>Select a Category</h2>
+    <div class="cards">
+      <div class="card" onclick="openCategory('beverages')">
+        <i class="fas fa-wine-bottle"></i>
+        <h3>Beverages</h3>
+      </div>
+      <div class="card" onclick="openCategory('restaurant')">
+        <i class="fas fa-utensils"></i>
+        <h3>Restaurant</h3>
+      </div>
+      <div class="card" onclick="openCategory('groceries')">
+        <i class="fas fa-shopping-basket"></i>
+        <h3>Groceries</h3>
+      </div>
+    </div>
   </section>
 
-  <!-- Restaurant -->
-  <section id="restaurant">
-    <h2>Restaurant</h2>
-    <div class="products" id="restaurant-list"></div>
-  </section>
-
-  <!-- Groceries -->
-  <section id="groceries">
-    <h2>Groceries</h2>
-    <div class="products" id="groceries-list"></div>
+  <!-- Products -->
+  <section id="products-section" style="display:none;">
+    <h2 id="category-title"></h2>
+    <div class="products" id="product-list"></div>
+    <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
   </section>
 
   <!-- Cart -->
@@ -102,8 +113,20 @@
     const currency = "USD";
     let cart = [];
 
-    function renderProducts(category, containerId) {
-      const productList = document.getElementById(containerId);
+    function showCategories() {
+      document.getElementById("categories").style.display = "block";
+      document.getElementById("products-section").style.display = "none";
+    }
+
+    function openCategory(category) {
+      document.getElementById("categories").style.display = "none";
+      document.getElementById("products-section").style.display = "block";
+      document.getElementById("category-title").innerText = category.charAt(0).toUpperCase() + category.slice(1);
+      renderProducts(category);
+    }
+
+    function renderProducts(category) {
+      const productList = document.getElementById("product-list");
       productList.innerHTML = "";
       products[category].forEach((product, index) => {
         const card = document.createElement("div");
@@ -154,11 +177,6 @@
       message += `Total: ${currency} ${cart.reduce((a,b)=>a+b.price,0).toFixed(2)}`;
       window.open(`https://wa.me/263771857122?text=${message}`, "_blank");
     });
-
-    // Initial render
-    renderProducts("beverages", "beverages-list");
-    renderProducts("restaurant", "restaurant-list");
-    renderProducts("groceries", "groceries-list");
   </script>
 </body>
 </html>
