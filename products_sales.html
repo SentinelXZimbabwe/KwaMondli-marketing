@@ -28,13 +28,23 @@
     .product-card p {margin:5px 0;}
     .product-card button {background:#ff4b2b;border:none;padding:8px 15px;border-radius:5px;color:#fff;cursor:pointer;margin-top:10px;}
     .back-btn {display:inline-block;margin:20px auto;padding:10px 20px;background:#ff416c;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold;}
-    .cart {position:fixed;top:80px;right:20px;background:#111;padding:20px;border-radius:15px;width:280px;max-height:80vh;overflow-y:auto;}
+
+    /* Desktop Cart */
+    .cart {position:fixed;top:80px;right:20px;background:#111;padding:20px;border-radius:15px;width:280px;max-height:80vh;overflow-y:auto;z-index:1000;}
     .cart h3 {margin-top:0;color:#ff4b2b;}
     .cart-item {display:flex;justify-content:space-between;margin-bottom:10px;}
     .checkout-btn {background:#ff416c;padding:10px;width:100%;border:none;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;margin-top:10px;}
+
+    /* Mobile Cart */
+    #mobile-cart {display:none;position:fixed;bottom:0;left:0;width:100%;background:#111;padding:15px;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -3px 15px rgba(0,0,0,0.5);z-index:1000;}
+    #mobile-cart h3 {margin:0 0 10px;color:#ff4b2b;font-size:1.2rem;}
+    #mobile-cart .cart-item {display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem;}
+    #mobile-cart .checkout-btn {padding:8px;font-size:1rem;}
+
     @media(max-width:768px){
       .products,.cards{flex-direction:column;align-items:center}
-      .cart{width:90%;right:5%;top:auto;bottom:20px}
+      .cart{display:none;}
+      #mobile-cart{display:block;}
     }
   </style>
 </head>
@@ -75,12 +85,20 @@
     <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
   </section>
 
-  <!-- Cart -->
+  <!-- Desktop Cart -->
   <div class="cart" id="cart">
     <h3>Shopping Cart</h3>
     <div id="cart-items"></div>
     <p><strong>Total:</strong> <span id="cart-currency">USD</span> <span id="cart-total">0</span></p>
     <button class="checkout-btn" id="checkout">Checkout via WhatsApp</button>
+  </div>
+
+  <!-- Mobile Cart -->
+  <div id="mobile-cart">
+    <h3>Cart</h3>
+    <div id="mobile-cart-items"></div>
+    <p><strong>Total:</strong> <span id="mobile-cart-currency">USD</span> <span id="mobile-cart-total">0</span></p>
+    <button class="checkout-btn" id="mobile-checkout">Checkout via WhatsApp</button>
   </div>
 
   <script>
@@ -149,20 +167,32 @@
 
     function renderCart() {
       const cartItems = document.getElementById("cart-items");
+      const mobileCartItems = document.getElementById("mobile-cart-items");
       cartItems.innerHTML = "";
+      mobileCartItems.innerHTML = "";
       let total = 0;
       cart.forEach((item, idx) => {
         total += item.price;
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
+        const divDesktop = document.createElement("div");
+        divDesktop.className = "cart-item";
+        divDesktop.innerHTML = `
           <span>${item.name} - ${currency} ${item.price.toFixed(2)}</span>
           <button onclick="removeFromCart(${idx})" style="background:red;color:#fff;border:none;border-radius:3px;">x</button>
         `;
-        cartItems.appendChild(div);
+        cartItems.appendChild(divDesktop);
+
+        const divMobile = document.createElement("div");
+        divMobile.className = "cart-item";
+        divMobile.innerHTML = `
+          <span>${item.name} - ${currency} ${item.price.toFixed(2)}</span>
+          <button onclick="removeFromCart(${idx})" style="background:red;color:#fff;border:none;border-radius:3px;">x</button>
+        `;
+        mobileCartItems.appendChild(divMobile);
       });
       document.getElementById("cart-total").innerText = total.toFixed(2);
       document.getElementById("cart-currency").innerText = currency;
+      document.getElementById("mobile-cart-total").innerText = total.toFixed(2);
+      document.getElementById("mobile-cart-currency").innerText = currency;
     }
 
     window.removeFromCart = function(index) {
@@ -170,13 +200,17 @@
       renderCart();
     };
 
-    document.getElementById("checkout").addEventListener("click", () => {
-      if(cart.length === 0){ alert("Your cart is empty!"); return; }
+    function checkout(cartArray) {
+      if(cartArray.length === 0){ alert("Your cart is empty!"); return; }
       let message = "Hello KoMondli, I'd like to order:%0A";
-      cart.forEach(item => { message += `- ${item.name}: ${currency} ${item.price.toFixed(2)}%0A`; });
-      message += `Total: ${currency} ${cart.reduce((a,b)=>a+b.price,0).toFixed(2)}`;
+      cartArray.forEach(item => { message += `- ${item.name}: ${currency} ${item.price.toFixed(2)}%0A`; });
+      message += `Total: ${currency} ${cartArray.reduce((a,b)=>a+b.price,0).toFixed(2)}`;
       window.open(`https://wa.me/263771857122?text=${message}`, "_blank");
-    });
+    }
+
+    document.getElementById("checkout").addEventListener("click", () => checkout(cart));
+    document.getElementById("mobile-checkout").addEventListener("click", () => checkout(cart));
+
   </script>
 </body>
 </html>
