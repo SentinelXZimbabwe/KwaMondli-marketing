@@ -65,10 +65,6 @@
         <i class="fas fa-shopping-basket"></i>
         <h3>Groceries</h3>
       </div>
-      <div class="card" onclick="openCategory('snacks')">
-        <i class="fas fa-cookie-bite"></i>
-        <h3>Snacks</h3>
-      </div>
     </div>
   </section>
 
@@ -111,11 +107,6 @@
         {name: "Kellogs Cornflakes", price: 4.00, img: "products&prices/kellogs-cornflakes-$4.png"},
         {name: "MAQ Washing Powder 2kg", price: 4.00, img: "products&prices/maq-washing-powder-new-2kg-$4.jpg"},
         {name: "Chips Crisps", price: 0.35, img: "products&prices/chips-crisps-$0.35.jpg"}
-      ],
-      snacks: [
-        {name: "Chibuku Snack", price: 0.15, img: "products&prices/chibuku-snack-$0.15.jpg"},
-        {name: "Mandazi", price: 0.20, img: "products&prices/mandazi-$0.20.jpg"},
-        {name: "Biscuits", price: 0.25, img: "products&prices/biscuits-$0.25.jpg"}
       ]
     };
 
@@ -148,44 +139,4 @@
         `;
         productList.appendChild(card);
       });
-    }
-
-    window.addToCart = function(category, index) {
-      const product = products[category][index];
-      cart.push({name: product.name, price: product.price});
-      renderCart();
-    };
-
-    function renderCart() {
-      const cartItems = document.getElementById("cart-items");
-      cartItems.innerHTML = "";
-      let total = 0;
-      cart.forEach((item, idx) => {
-        total += item.price;
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <span>${item.name} - ${currency} ${item.price.toFixed(2)}</span>
-          <button onclick="removeFromCart(${idx})" style="background:red;color:#fff;border:none;border-radius:3px;">x</button>
-        `;
-        cartItems.appendChild(div);
-      });
-      document.getElementById("cart-total").innerText = total.toFixed(2);
-      document.getElementById("cart-currency").innerText = currency;
-    }
-
-    window.removeFromCart = function(index) {
-      cart.splice(index, 1);
-      renderCart();
-    };
-
-    document.getElementById("checkout").addEventListener("click", () => {
-      if(cart.length === 0){ alert("Your cart is empty!"); return; }
-      let message = "Hello KoMondli, I'd like to order:%0A";
-      cart.forEach(item => { message += `- ${item.name}: ${currency} ${item.price.toFixed(2)}%0A`; });
-      message += `Total: ${currency} ${cart.reduce((a,b)=>a+b.price,0).toFixed(2)}`;
-      window.open(`https://wa.me/263771857122?text=${message}`, "_blank");
-    });
-  </script>
-</body>
-</html>
+   
