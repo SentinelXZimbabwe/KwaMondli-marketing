@@ -65,6 +65,10 @@
         <i class="fas fa-shopping-basket"></i>
         <h3>Groceries</h3>
       </div>
+      <div class="card" onclick="openCategory('snacks')">
+        <i class="fas fa-cookie-bite"></i>
+        <h3>Snacks</h3>
+      </div>
     </div>
   </section>
 
@@ -84,10 +88,9 @@
   </div>
 
   <script>
-    // Categorized products
     const products = {
       beverages: [
-        {name: "Coke 330ml Bottle", price: 0.30, img: "products&prices/coke-330ml-bottle-$0.30.jpg"},
+        {name: "Coke 330ml Bottle", price: 0.50, img: "products&prices/coke-330ml-bottle-$0.50.jpg"},
         {name: "Coke PET 500ml", price: 1.00, img: "products&prices/coke-pet-500ml-$1.jpg"},
         {name: "Pepsi 500ml", price: 0.50, img: "products&prices/pepsi-500ml-$0.50.jpg"},
         {name: "Sprite 500ml", price: 1.00, img: "products&prices/sprite-500ml-$1.jpg"},
@@ -106,7 +109,13 @@
         {name: "Colgate Toothpaste", price: 1.00, img: "products&prices/colgate-toothpaste-$1.jpg"},
         {name: "Geisha Soap", price: 1.00, img: "products&prices/geisha-soap-$1.jpeg"},
         {name: "Kellogs Cornflakes", price: 4.00, img: "products&prices/kellogs-cornflakes-$4.png"},
-        {name: "MAQ Washing Powder 2kg", price: 4.00, img: "products&prices/maq-washing-powder-new-2kg-$4.jpg"}
+        {name: "MAQ Washing Powder 2kg", price: 4.00, img: "products&prices/maq-washing-powder-new-2kg-$4.jpg"},
+        {name: "Chips Crisps", price: 0.35, img: "products&prices/chips-crisps-$0.35.jpg"}
+      ],
+      snacks: [
+        {name: "Chibuku Snack", price: 0.15, img: "products&prices/chibuku-snack-$0.15.jpg"},
+        {name: "Mandazi", price: 0.20, img: "products&prices/mandazi-$0.20.jpg"},
+        {name: "Biscuits", price: 0.25, img: "products&prices/biscuits-$0.25.jpg"}
       ]
     };
 
