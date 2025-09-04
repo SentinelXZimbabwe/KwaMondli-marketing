@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {margin:0;font-family:'Montserrat',sans-serif;background:#1c1c1c;color:#fff;}
-    header {background:linear-gradient(90deg,#ff416c,#ff4b2b);padding:30px 20px;text-align:center;}
+    header {background:linear-gradient(90deg,#ff416c,#ff4b2b);padding:30px 20px;text-align:center;position:relative;}
     header img {width:100px;margin-bottom:15px;}
     header h1 {font-family:'Raleway',sans-serif;font-size:2.5rem;margin:0;}
     nav {display:flex;justify-content:center;background:#111;flex-wrap:wrap;}
@@ -35,8 +35,13 @@
     .cart-item {display:flex;justify-content:space-between;margin-bottom:10px;}
     .checkout-btn {background:#ff416c;padding:10px;width:100%;border:none;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;margin-top:10px;}
 
-    /* Mobile Cart */
-    #mobile-cart {display:none;position:fixed;bottom:0;left:0;width:100%;background:#111;padding:15px;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -3px 15px rgba(0,0,0,0.5);z-index:1000;}
+    /* Mobile Cart Icon */
+    #cart-icon {display:none;position:fixed;bottom:20px;right:20px;background:#ff4b2b;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1000;box-shadow:0 4px 15px rgba(0,0,0,0.5);}
+    #cart-icon i {font-size:1.8rem;color:#fff;position:relative;}
+    #cart-count {position:absolute;top:5px;right:5px;background:#fff;color:#ff4b2b;width:20px;height:20px;font-size:0.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+
+    /* Mobile Cart Panel */
+    #mobile-cart {display:none;position:fixed;bottom:0;left:0;width:100%;background:#111;padding:15px;border-top-left-radius:15px;border-top-right-radius:15px;box-shadow:0 -3px 15px rgba(0,0,0,0.5);z-index:999;}
     #mobile-cart h3 {margin:0 0 10px;color:#ff4b2b;font-size:1.2rem;}
     #mobile-cart .cart-item {display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem;}
     #mobile-cart .checkout-btn {padding:8px;font-size:1rem;}
@@ -44,7 +49,7 @@
     @media(max-width:768px){
       .products,.cards{flex-direction:column;align-items:center}
       .cart{display:none;}
-      #mobile-cart{display:block;}
+      #cart-icon{display:flex;}
     }
   </style>
 </head>
@@ -93,7 +98,13 @@
     <button class="checkout-btn" id="checkout">Checkout via WhatsApp</button>
   </div>
 
-  <!-- Mobile Cart -->
+  <!-- Mobile Cart Icon -->
+  <div id="cart-icon" onclick="toggleMobileCart()">
+    <i class="fas fa-shopping-basket"></i>
+    <div id="cart-count">0</div>
+  </div>
+
+  <!-- Mobile Cart Panel -->
   <div id="mobile-cart">
     <h3>Cart</h3>
     <div id="mobile-cart-items"></div>
@@ -193,6 +204,7 @@
       document.getElementById("cart-currency").innerText = currency;
       document.getElementById("mobile-cart-total").innerText = total.toFixed(2);
       document.getElementById("mobile-cart-currency").innerText = currency;
+      document.getElementById("cart-count").innerText = cart.length;
     }
 
     window.removeFromCart = function(index) {
@@ -211,6 +223,10 @@
     document.getElementById("checkout").addEventListener("click", () => checkout(cart));
     document.getElementById("mobile-checkout").addEventListener("click", () => checkout(cart));
 
+    function toggleMobileCart() {
+      const mobileCart = document.getElementById("mobile-cart");
+      mobileCart.style.display = mobileCart.style.display === "block" ? "none" : "block";
+    }
   </script>
 </body>
 </html>
